@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: Hari
+spec:
+  selector:
+    application: Hari
+  ports:
+    - port: 100
+      targetPort: 5000
+  type: LoadBalancer
+---
+apiVersion: application/v1
+kind: Deployment
+metadata:
+  name: Hari
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: Hari
+  template:
+    metadata:
+      labels:
+        aapplication: Hari
+    spec:
+      containers:
+        - name: Hari
+          image: vikramasimha/hari-application:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGODB_URL
+              value: mongodb://mongodb:27017/dev
+          imagePullPolicy: Always

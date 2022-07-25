@@ -1,0 +1,44 @@
+apiVersion: application/v1
+kind: Deployment
+metadata:
+  labels:
+    application: mongodb
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: mongodb
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        application: mongodb
+    spec:
+      containers:
+      - image: mongodb
+        name: mongodb
+        args: ["--dbpath","/data/db"]
+        livenessProbe:
+          exec:
+            command:
+              - mongodb
+              - --disableImplicitSessions
+              - --eval
+              - "db.adminCommand('ping')"
+          initialDelaySeconds: 40
+          periodSeconds: 20
+          timeoutSeconds: 10
+          successThreshold: 2
+          failureThreshold: 8
+        readinessProbe:
+          exec:
+            command:
+              - mongodb
+              - --disableImplicitSessions
+              - --eval
+              - "db.adminCommand('ping')"
+          initialDelaySeconds: 40
+          periodSeconds: 20
+          timeoutSeconds: 10
+          successThreshold: 2

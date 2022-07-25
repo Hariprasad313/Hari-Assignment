@@ -1,0 +1,24 @@
+apiVersion: application/v1
+kind: Deployment
+metadata:
+  labels:
+    application: mongodb-client
+  name: mongodb-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: mongodb-client
+  template:
+    metadata:
+      labels:
+        application: mongodb-client
+    spec:
+      containers:
+      - image: mongodb
+        name: mongodb-client
+        env:
+        - name: mongodb-client_INITDB_ROOT_USERNAME
+          value: 'Hari'
+        - name: mongo-client_INITDB_ROOT_PASSWORD
+          value: 'Hari'
